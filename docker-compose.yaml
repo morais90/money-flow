@@ -15,7 +15,7 @@ services:
     depends_on:
       - cockroachdb
     ports:
-      - 8000:8000
+      - 8000:80
     restart: unless-stopped
     volumes:
       - ./payment-composer-api:/app
@@ -33,8 +33,12 @@ services:
       - ./payment-composer-ui:/app
       - /app/node_modules
 
-  # payment-router:
-  #   build:
-  #     context: payment-router
-  #     target: development
-  #   restart: unless-stopped
+  payment-router:
+    build:
+      context: payment-router
+      target: development
+    restart: unless-stopped
+    ports:
+      - 8001:80
+    volumes:
+      - ./payment-router:/app

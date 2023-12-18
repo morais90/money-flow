@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  cockroachdb:
+    image: cockroachdb/cockroach:v23.1.13
+    ports:
+      - "26257:26257"
+      - "8080:8080"
+    command: start-single-node --insecure
+
+  payment-composer-api:
+    build:
+      context: payment-composer-api
+      target: development
+    depends_on:
+      - cockroachdb
+    ports:
+      - 8000:8000
+    restart: unless-stopped
+    volumes:
+      - ./payment-composer-api:/app
+
+  payment-composer-ui:
+    build:
+      context: payment-composer-ui
+      target: development
+    depends_on:
+      - payment-composer-api
+    ports:
+      - 5173:5173
+    restart: unless-stopped
+    volumes:
+      - ./payment-composer-ui:/app
+      - /app/node_modules
+
+  # payment-router:
+  #   build:
+  #     context: payment-router
+  #     target: development
+  #   restart: unless-stopped

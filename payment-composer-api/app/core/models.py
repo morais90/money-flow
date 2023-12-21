@@ -20,5 +20,7 @@ class Model(Base):
 
 
 class PaymentRule(Model):
+    __tablename__ = "payment_rules"
+
     company_id = Column(String, nullable=False)
     rules = Column(JSON, nullable=False, default=dict)

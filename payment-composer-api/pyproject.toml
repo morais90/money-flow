@@ -9,7 +9,17 @@ license = "MIT"
 python = "^3.11"
 uvicorn = "^0.24.0.post1"
 fastapi = "^0.105.0"
+sqlalchemy = "^2.0.23"
+asyncpg = "^0.29.0"
+alembic = "^1.13.1"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+combine_as_imports = true
+line_length = 120

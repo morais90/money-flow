@@ -1,19 +1,33 @@
 version: "3.9"
 
 services:
-  cockroachdb:
-    image: cockroachdb/cockroach:v23.1.13
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: moneyflow
+      POSTGRES_DB: moneyflow
     ports:
-      - "26257:26257"
-      - "8080:8080"
-    command: start-single-node --insecure
+      - 5433:5432
+    restart: unless-stopped
+    volumes:
+      - database_volume:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 
   payment-composer-api:
     build:
       context: payment-composer-api
       target: development
     depends_on:
-      - cockroachdb
+      - postgres
     ports:
       - 8000:80
     restart: unless-stopped
@@ -37,8 +51,16 @@ services:
     build:
       context: payment-router
       target: development
-    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+    environment:
+      - PAYMENT_COMPOSER_API=http://payment-composer-api:80
+      - RABBITMQ_DSN=amqp://guest:guest@rabbitmq:5672
     ports:
       - 8001:80
+    restart: unless-stopped
     volumes:
       - ./payment-router:/app
+
+volumes:
+  database_volume:

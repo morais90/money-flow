@@ -2,6 +2,8 @@ import httpx
 from app.core.settings import settings
 from faker import Faker
 
+from .exceptions import ServiceException
+
 Faker.seed(0)
 faker = Faker(["pt_BR"])
 
@@ -11,7 +13,11 @@ class PaymentComposerService:
         self.client = httpx.AsyncClient(base_url=settings.PAYMENT_COMPOSER_API)
 
     async def get_rules(self, company_id: str) -> dict:
-        response = await self.client.get(f"/rules/{company_id}")
+        response = await self.client.get(f"/payment-rules/{company_id}")
+
+        if response.status_code != httpx.codes.OK:
+            raise ServiceException("There was an error fetching the payment rules")
+
         return response.json()
 
 

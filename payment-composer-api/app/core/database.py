@@ -10,7 +10,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 engine = create_async_engine(
-    settings.POSTGRES_DSN, echo=True, connect_args={"server_settings": {"jit": "off"}}
+    str(settings.POSTGRES_DSN),
+    echo=True,
+    connect_args={"server_settings": {"jit": "off"}},
 )
 async_session_factory = sessionmaker(
     autocommit=False,

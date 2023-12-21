@@ -1,8 +1,5 @@
+from app.webhook.api import router as webhook_router
 from fastapi import FastAPI
 
 app = FastAPI()
-
-
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
+app.include_router(webhook_router)

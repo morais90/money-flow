@@ -18,7 +18,8 @@ RUN poetry install --no-root && \
 
 FROM builder as development
 
-RUN apt-get -q update && \
+RUN apt -q update && \
+    apt install netcat-traditional -y && \
     curl -sSL https://raw.githubusercontent.com/eficode/wait-for/master/wait-for --output wait-for && \
     chmod +x wait-for && \
     mv wait-for /usr/bin/

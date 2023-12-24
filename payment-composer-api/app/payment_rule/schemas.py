@@ -10,7 +10,7 @@ class NodeDependency(BaseModel):
 
 class Node(BaseModel):
     node_type: NodeType
-    id: str
+    node_id: str
     depends_on: list[NodeDependency] = Field(default_factory=list)
 
 

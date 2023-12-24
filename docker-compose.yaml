@@ -26,6 +26,7 @@ services:
     build:
       context: payment-composer-api
       target: development
+    command: ["wait-for", "postgres:5432", "--", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
     depends_on:
       - postgres
     ports:
@@ -51,6 +52,7 @@ services:
     build:
       context: payment-router
       target: development
+    command: ["wait-for", "payment-composer-api:80", "rabbitmq:5672", "--", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
     depends_on:
       - rabbitmq
     environment:
@@ -61,6 +63,19 @@ services:
     restart: unless-stopped
     volumes:
       - ./payment-router:/app
+
+  orchestrator:
+    build:
+      context: orchestrator
+      target: development
+    command: ["wait-for", "rabbitmq:5672", "--", "python", "-m", "app.main"]
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_DSN=amqp://guest:guest@rabbitmq:5672
+    restart: unless-stopped
+    volumes:
+      - ./orchestrator:/app
 
 volumes:
   database_volume:

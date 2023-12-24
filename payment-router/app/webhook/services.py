@@ -1,6 +1,7 @@
 import httpx
-from app.core.settings import settings
 from faker import Faker
+
+from app.core.settings import settings
 
 from .exceptions import ServiceException
 
@@ -12,7 +13,7 @@ class PaymentComposerService:
     def __init__(self) -> None:
         self.client = httpx.AsyncClient(base_url=settings.PAYMENT_COMPOSER_API)
 
-    async def get_rules(self, company_id: str) -> dict:
+    async def get_payment_rules(self, company_id: str) -> dict:
         response = await self.client.get(f"/payment-rules/{company_id}")
 
         if response.status_code != httpx.codes.OK:

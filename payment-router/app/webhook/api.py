@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.post("/payment", status_code=204, tags=["webhook"])
-async def payment_webhook(event: PaymentEvent):
+async def payment_webhook(event: PaymentEvent) -> None:
     try:
         company = await CompanyService().get_company(event.company_id)
         payment_rules = await PaymentComposerService().get_payment_rules(event.company_id)

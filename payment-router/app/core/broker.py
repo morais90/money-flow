@@ -6,6 +6,13 @@ from app.core.settings import settings
 
 
 def push_to_queue(queue_name: str, payload: dict):
+    """Push a payload to a queue
+
+    Args:
+        queue_name (str): Queue name
+        payload (dict): An arbitrary dictionary
+    """
+
     connection = pika.BlockingConnection(pika.URLParameters(str(settings.RABBITMQ_DSN)))
     channel = connection.channel()
 

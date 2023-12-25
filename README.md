@@ -6,12 +6,15 @@ MoneyFlow é um framework de fluxo de pagamentos que permite vocês compor as re
   - [Características arquiteturais](#características-arquiteturais)
   - [Arquitetura](#arquitetura)
   - [Design](#design)
-  - [Requirementos para iniciar o projeto](#requirementos-para-iniciar-o-projeto)
-  - [Rodando o projeto (veja os requirementos)](#rodando-o-projeto-veja-os-requirementos)
+  - [Requerimentos](#requerimentos)
+  - [Rodando o projeto](#rodando-o-projeto)
   - [Parando os serviços](#parando-os-serviços)
   - [Rodando migrations iniciais (payment-composer-api)](#rodando-migrations-iniciais-payment-composer-api)
   - [Gerando migrations (payment-composer-api)](#gerando-migrations-payment-composer-api)
   - [Rodando tests (payment-composer-api)](#rodando-tests-payment-composer-api)
+  - [Entendendo e testando o fluxo de pagamento](#entendendo-e-testando-o-fluxo-de-pagamento)
+    - [Crie uma regra de negócio no Payment Composer API](#crie-uma-regra-de-negócio-no-payment-composer-api)
+    - [Simule um evento através do webhook](#simule-um-evento-através-do-webhook)
 
 ### Características arquiteturais
 
@@ -191,13 +194,13 @@ C4Component
     UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
 ```
 
-### Requirementos para iniciar o projeto
+### Requerimentos
 
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - [pre-commit](https://pre-commit.com/#install)
 
-### Rodando o projeto (veja os requirementos)
+### Rodando o projeto
 
 ```shell
 $ docker compose up
@@ -244,4 +247,104 @@ $ docker compose run --rm payment-composer-api alembic revision --autogenerate
 
 ```shell
 $ docker compose run --rm payment-composer-api pytest -s -vv
+```
+
+### Entendendo e testando o fluxo de pagamento
+
+```mermaid
+sequenceDiagram
+    Customer-->>Payment Router: Evento de pagamento (webhook)
+    Payment Router-->>Payment Composer API: Consulta regra de negócio
+    Payment Composer API-->>Payment Router: Regra de negócio
+    Payment Router-->>Orchestrator: Enfileira evento de pagamento
+    Payment Router-->>Customer: 200 OK
+    Orchestrator-->>Orchestrator: Executa fluxo de pagamento
+```
+
+#### Crie uma regra de negócio no Payment Composer API
+
+`POST` http://localhost:8000/payment-rules
+
+```json
+{
+  "company_id": "b5aa9687-d61f-467c-973e-f55d446981dc",
+  "rules": [
+    {
+      "node_type": "condition",
+      "node_id": "condition-1",
+      "expect": [
+        {
+          "field": "$context.event.payment_type",
+          "operator": "eq",
+          "value": ["product"]
+        }
+      ]
+    },
+    {
+      "node_type": "task",
+      "node_id": "abort-flow-1",
+      "depends_on": [
+        {
+          "node_id": "conditional-1",
+          "state": "failure"
+        }
+      ],
+      "task_name": "payment.tasks.abort_flow",
+      "parameters": null
+    },
+    {
+      "node_type": "task",
+      "node_id": "generate-invoice-1",
+      "depends_on": [
+        {
+          "node_id": "conditional-1",
+          "state": "success"
+        }
+      ],
+      "task_name": "payment.tasks.generate_invoice",
+      "parameters": {
+        "company_id": "$context.event.company_id",
+        "product_id": "$context.event.product.id"
+      }
+    },
+    {
+      "node_type": "condition",
+      "node_id": "condition-2",
+      "depends_on": [
+        {
+          "node_id": "condition-1",
+          "state": "success"
+        }
+      ],
+      "expect": [
+        {
+          "field": "$context.event.product.type",
+          "operator": "in",
+          "value": ["book", "ebook"]
+        }
+      ]
+    },
+    {
+      "node_type": "task",
+      "node_id": "generate_royalty-1",
+      "task_name": "payment.tasks.generate_royalty",
+      "parameters": {
+        "company_id": "$context.event.company_id",
+        "product_id": "$context.event.product.id"
+      }
+    }
+  ]
+}
+```
+
+#### Simule um evento através do webhook
+
+`POST` http://localhost:8001/payment
+
+```json
+{
+  "company_id": "b5aa9687-d61f-467c-973e-f55d446981dc",
+  "type": "product",
+  "total": "120.0"
+}
 ```

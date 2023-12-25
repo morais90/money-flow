@@ -1,19 +1,20 @@
 from uuid import uuid4
 
-from app.core.database import Base
-from sqlalchemy import (
-    Column,
-    DateTime,
-    String,
-)
+import pendulum
+from sqlalchemy import Column, DateTime, String
 from sqlalchemy.dialects.postgresql import JSON, UUID
-from sqlalchemy.sql import func
+
+from app.core.database import Base
+
+
+def utc_now():
+    return pendulum.now("UTC")
 
 
 class Model(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
-    created_at = Column(DateTime, server_default=func.now())
-    updated_at = Column(DateTime, server_default=func.now(), server_onupdate=func.now())
+    created_at = Column(DateTime, default=utc_now)
+    updated_at = Column(DateTime, default=utc_now, onupdate=utc_now)
 
     __abstract__ = True
     __mapper_args__ = {"eager_defaults": True}

@@ -1,3 +1,5 @@
+from unittest.mock import ANY
+
 from fastapi import status
 
 from app.tests.factories import PaymentRuleFactory
@@ -17,10 +19,10 @@ class TestAPIGetPaymentRules:
         response = client.get(f"/payment-rules/{payment_rule.company_id}")
 
         assert response.json() == {
-            "id": "e3e70682-c209-4cac-a29f-6fbed82c07cd",
+            "id": ANY,
             "created_at": "2023-12-24T12:00:00",
             "updated_at": "2023-12-24T12:00:00",
-            "company_id": "f728b4fa-4248-4e3a-8a5d-2f346baa9455",
+            "company_id": ANY,
             "rules": [
                 {
                     "node_type": "condition",

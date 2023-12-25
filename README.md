@@ -1,5 +1,9 @@
 ## MoneyFlow (Alpha version)
 
+[![pre-commit](https://github.com/morais90/moneyflow/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/morais90/moneyflow/actions/workflows/pre-commit.yml)
+
+[![Tests](https://github.com/morais90/moneyflow/actions/workflows/tests.yml/badge.svg)](https://github.com/morais90/moneyflow/actions/workflows/tests.yml)
+
 MoneyFlow é um framework de fluxo de pagamentos que permite vocês compor as regras de negócio para qualquer cenário de pagamento!
 
 ![Banner](assets/moneyflow.png)

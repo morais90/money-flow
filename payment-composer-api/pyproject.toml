@@ -36,4 +36,4 @@ line-length = 120
 known-first-party = ["app"]
 
 [tool.pytest_env]
-POSTGRES_DSN = "postgresql+asyncpg://postgres:moneyflow@postgres:5432/test_db"
+POSTGRES_DSN = {value = "postgresql+asyncpg://postgres:moneyflow@postgres:5432/test_db", skip_if_set = true}

@@ -1,0 +1,25 @@
+name: pre-commit
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+
+      - name: Install dependencies
+        run: |
+          pip install -U pip
+          pip install pre-commit
+
+      - name: Run pre-commit
+        shell: bash
+        run: pre-commit run --all-files

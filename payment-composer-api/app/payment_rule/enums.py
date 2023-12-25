@@ -20,8 +20,6 @@ class ConditionOperator(str, Enum):
     LTE = "lte"
     IN = "in"
     NIN = "nin"
-    CONTAINS = "contains"
-    NCONTAINS = "ncontains"
     STARTSWITH = "startswith"
     ENDSWITH = "endswith"
     ISNULL = "isnull"

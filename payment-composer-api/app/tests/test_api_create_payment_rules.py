@@ -2,6 +2,8 @@ from unittest.mock import ANY
 
 from fastapi import status
 
+from app.tests.factories import PaymentRuleFactory
+
 
 class TestAPICreatePaymentRules:
     def test_create_payment_rules_condition_node(self, client):
@@ -107,6 +109,49 @@ class TestAPICreatePaymentRules:
                         "param1": "$context.event.payment_type",
                         "nested_param": {"skip_on_fail": True, "skip_message": "It is a optional task"},
                     },
+                }
+            ],
+        }
+        assert response.status_code == status.HTTP_201_CREATED
+
+    def test_create_payment_already_existing(self, client):
+        payment_rule = PaymentRuleFactory(
+            rules=[
+                {
+                    "node_type": "condition",
+                    "node_id": "condition-1",
+                    "expect": [{"field": "$context.event.payment_type", "operator": "eq", "value": ["product"]}],
+                },
+            ]
+        )
+
+        response = client.post(
+            "/payment-rules/",
+            json={
+                "company_id": payment_rule.company_id,
+                "rules": [
+                    {
+                        "node_type": "condition",
+                        "node_id": "condition-1",
+                        "expect": [
+                            {"field": "$context.event.payment_type", "operator": "eq", "value": ["digitalProduct"]}
+                        ],
+                    },
+                ],
+            },
+        )
+
+        assert response.json() == {
+            "id": str(payment_rule.id),
+            "created_at": "2023-12-24T12:00:00",
+            "updated_at": "2023-12-24T12:00:00",
+            "company_id": payment_rule.company_id,
+            "rules": [
+                {
+                    "node_type": "condition",
+                    "node_id": "condition-1",
+                    "depends_on": [],
+                    "expect": [{"field": "$context.event.payment_type", "operator": "eq", "value": ["digitalProduct"]}],
                 }
             ],
         }

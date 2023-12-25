@@ -9,6 +9,8 @@ MoneyFlow é um framework de fluxo de pagamentos que permite vocês compor as re
   - [Requirementos para iniciar o projeto](#requirementos-para-iniciar-o-projeto)
   - [Rodando o projeto (veja os requirementos)](#rodando-o-projeto-veja-os-requirementos)
   - [Parando os serviços](#parando-os-serviços)
+  - [Rodando migrations iniciais (payment-composer-api)](#rodando-migrations-iniciais-payment-composer-api)
+  - [Gerando migrations (payment-composer-api)](#gerando-migrations-payment-composer-api)
 
 ### Características arquiteturais
 
@@ -221,3 +223,15 @@ $ docker compose down -v
 ```
 
 :warning: **Atenção**: Este comando irá remover todos os volumes dos serviços, incluindo o banco de dados e o RabbitMQ. Tenha certeza que você deseja remover os volumes antes de executar este comando.
+
+### Rodando migrations iniciais (payment-composer-api)
+
+```shell
+$ docker compose run --rm payment-composer-api alembic upgrade head
+```
+
+### Gerando migrations (payment-composer-api)
+
+```shell
+$ docker compose run --rm payment-composer-api alembic revision --autogenerate
+```

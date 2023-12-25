@@ -1,8 +1,10 @@
-## MoneyFlow
+## MoneyFlow (Alpha version)
 
 MoneyFlow é um framework de fluxo de pagamentos que permite vocês compor as regras de negócio para qualquer cenário de pagamento!
 
-- [MoneyFlow](#moneyflow)
+![Banner](assets/moneyflow.png)
+
+- [MoneyFlow (Alpha version)](#moneyflow-alpha-version)
   - [Características arquiteturais](#características-arquiteturais)
   - [Arquitetura](#arquitetura)
   - [Design](#design)

@@ -16,8 +16,6 @@ def callback(ch, method, properties, body):
     )
 
     try:
-        print("rules", event["rules"])
-
         workflow = create_workflow(payment["type"])
         workflow(context=context, rules=event["rules"])
 

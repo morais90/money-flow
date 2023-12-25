@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm.exc import NoResultFound
 
-from app.core.database import Session
+from app.core.database import Session, create_or_update
 from app.core.dependencies import get_session
 from app.core.models import PaymentRule
 
@@ -27,9 +27,9 @@ async def get_payment_rules(company_id: UUID, db: Session = Depends(get_session)
 
 @router.post("/payment-rules/", status_code=201)
 async def create_payment_rules(payload: PaymentRuleCreate, db: Session = Depends(get_session)) -> PaymentRuleSchema:
-    payment_rule = PaymentRule(**payload.model_dump())
-
     async with db.begin():
-        db.add(payment_rule)
+        payment_rule = await create_or_update(
+            db, PaymentRule, defaults=payload.model_dump(), company_id=payload.company_id
+        )
 
     return payment_rule

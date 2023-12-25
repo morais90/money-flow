@@ -127,15 +127,15 @@ class TestAPICreatePaymentRules:
             },
         )
 
-        msg = (
-            "Input tag 'unknown' found using 'node_type' does not match any of the expected tags: 'condition', 'task'",
-        )
         expected = {
             "detail": [
                 {
                     "type": "union_tag_invalid",
                     "loc": ["body", "rules", 0],
-                    "msg": msg,
+                    "msg": (
+                        "Input tag 'unknown' found using 'node_type' does not match any of the expected tags: "
+                        "'condition', 'task'"
+                    ),
                     "input": {
                         "node_type": "unknown",
                         "node_id": "condition-1",

@@ -1,9 +1,11 @@
 from datetime import datetime
+from typing import Literal, Union
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, Tag
+from typing_extensions import Annotated
 
-from .enums import ConditionOperator, NodeState, NodeType
+from .enums import ConditionOperator, NodeState
 
 
 class NodeDependency(BaseModel):
@@ -12,7 +14,6 @@ class NodeDependency(BaseModel):
 
 
 class Node(BaseModel):
-    node_type: NodeType
     node_id: str
     depends_on: list[NodeDependency] = Field(default_factory=list)
 
@@ -24,12 +25,14 @@ class ConditionContext(BaseModel):
 
 
 class Condition(Node):
+    node_type: Literal["condition"] = "condition"
     expect: list[ConditionContext] = Field(default_factory=list)
 
 
 class Task(Node):
+    node_type: Literal["task"] = "task"
     task_name: str
-    parameters: dict = None
+    parameters: dict | None = None
 
 
 class PaymentRuleSchema(BaseModel):
@@ -40,6 +43,15 @@ class PaymentRuleSchema(BaseModel):
     rules: list[Condition | Task]
 
 
+def get_node_type(value):
+    return value["node_type"]
+
+
+Nodes = Annotated[
+    Union[Annotated[Condition, Tag("condition")], Annotated[Task, Tag("task")]], Field(discriminator="node_type")
+]
+
+
 class PaymentRuleCreate(BaseModel):
     company_id: str
-    rules: list[Condition | Task]
+    rules: list[Nodes]

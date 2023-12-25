@@ -18,6 +18,11 @@ def freeze():
     freezer.stop()
 
 
+@pytest.fixture(autouse=True)
+def faker_seed():
+    return 2024
+
+
 @pytest.fixture(scope="session", autouse=True)
 def create_db():
     create_database()

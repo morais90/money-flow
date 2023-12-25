@@ -1,4 +1,3 @@
-
 from prefect import task
 
 from app.workflows.context import Context
@@ -9,6 +8,12 @@ from .typing import TaskInput
 
 @task
 def task_node(input: TaskInput, context: Context):
+    """Task Node
+
+    Args:
+        input (TaskInput): Task Input
+        context (Context): Data Context
+    """
     func = get_task_by_name(input["name"])
     params = {}
 

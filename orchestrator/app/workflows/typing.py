@@ -1,6 +1,8 @@
+from typing import Literal
+
 from typing_extensions import TypedDict
 
-from .enums import ConditionOperator, NodeState, NodeType
+from .enums import ConditionOperator, NodeState
 
 
 class NodeDependency(TypedDict):
@@ -9,7 +11,6 @@ class NodeDependency(TypedDict):
 
 
 class Node(TypedDict):
-    node_type: NodeType
     node_id: str
     depends_on: list[NodeDependency]
 
@@ -21,10 +22,12 @@ class Conditional(TypedDict):
 
 
 class ConditionNode(Node):
+    node_type: Literal["condition"]
     expect: list[Conditional]
 
 
 class TaskNode(Node):
+    node_type: Literal["task"]
     task_name: str
     parameters: dict | None
 

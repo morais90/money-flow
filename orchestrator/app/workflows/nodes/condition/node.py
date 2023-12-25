@@ -23,6 +23,13 @@ OPERATION_MAP = {
 
 @task
 def condition_node(input: ConditionInput, context: Context):
+    """Condition Node
+
+    Args:
+        input (ConditionInput): Condition Input
+        context (Context): Data Context
+    """
+
     for expect in input["expect"]:
         is_sequence_operator = expect["operator"] in [ConditionOperator.IN, ConditionOperator.NIN]
 

@@ -11,14 +11,22 @@ from .typing import Rules
 
 @flow(name="Product Worlflow")
 def product_workflow(context: Context, rules: Rules):
+    """Product Workflow
+
+    Args:
+        context (Context): Context
+        rules (Rules): Rules
+    """
+
+    # TODO Node class with upstream and downstream methods
     execution_order = {}
     depedencie_graph = defaultdict(list)
 
     for rule in rules:
-        print("Product Workflow", rule)
         node_id = rule["node_id"]
         depends_on = rule.get("depends_on") or []
 
+        # TODO: Node factory to abstract the node creation
         if rule["node_type"] == "condition":
             node = partial(condition_node, rule["expect"], context=context)
 
@@ -30,5 +38,4 @@ def product_workflow(context: Context, rules: Rules):
         else:
             execution_order[node_id] = {"task": node, "state": None}
 
-    print(execution_order)
-    print(depedencie_graph)
+    # TODO: Execute the graph

@@ -8,7 +8,7 @@ class Context:
         self.data = MappingProxyType({"$context": data})
 
     def get_field_by_path(self, path: str) -> Any:
-        """Deep find value from dict by path
+        """Deep find a value in a dict by its path
 
         Args:
             path (str): Full path to the field denoted by dot notation
@@ -20,4 +20,7 @@ class Context:
             Any: Value of the field
         """
 
-        return reduce(lambda data, key: data.get(key) if isinstance(data, dict) else None, path.split("."), self.data)
+        def reducer(data, key):
+            data.get(key) if isinstance(data, dict) else None
+
+        return reduce(reducer, path.split("."), self.data)

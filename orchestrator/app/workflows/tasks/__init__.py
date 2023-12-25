@@ -12,4 +12,9 @@ TASKS = {
 
 
 def get_task_by_name(task_name: str) -> Callable:
+    """Task Factory returns a task by it public alias.
+
+    Args:
+        task_name (str): Task Name
+    """
     return TASKS[task_name]

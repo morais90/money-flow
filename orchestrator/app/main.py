@@ -15,14 +15,15 @@ def callback(ch, method, properties, body):
         }
     )
 
-    try:
-        workflow = create_workflow(payment["type"])
-        workflow(context=context, rules=event["rules"])
+    # TODO: Support Dask Distributed
+    # TODO: Error handling and retry policy
+    workflow = create_workflow(payment["type"])
+    workflow(context=context, rules=event["rules"])
 
-    finally:
-        ch.basic_ack(delivery_tag=method.delivery_tag)
+    ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
+# TODO: Tolerance for failures
 def main():
     connection = pika.BlockingConnection(pika.URLParameters(str(settings.RABBITMQ_DSN)))
     channel = connection.channel()

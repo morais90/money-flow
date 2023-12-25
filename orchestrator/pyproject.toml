@@ -18,11 +18,8 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
+fix = true
 line-length = 120
 
-[tool.isort]
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-combine_as_imports = true
-line_length = 120
+[tool.ruff.isort]
+known-first-party = ["app"]

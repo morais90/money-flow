@@ -8,7 +8,7 @@ from app.core.database import Base
 
 
 def utc_now():
-    return pendulum.now("UTC")
+    return pendulum.now().naive()
 
 
 class Model(Base):

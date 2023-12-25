@@ -1,8 +1,11 @@
-from app.core.database import Session
+from app.core.database import Session, engine
 
 
 async def get_session() -> Session:
+    session = Session()
+
     try:
-        yield Session()
+        yield session
     finally:
-        await Session.remove()
+        await session.close()
+        await engine.dispose()

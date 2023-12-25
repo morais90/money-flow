@@ -11,19 +11,23 @@ MoneyFlow é um framework de fluxo de pagamentos que permite vocês compor as re
   - [Parando os serviços](#parando-os-serviços)
   - [Rodando migrations iniciais (payment-composer-api)](#rodando-migrations-iniciais-payment-composer-api)
   - [Gerando migrations (payment-composer-api)](#gerando-migrations-payment-composer-api)
+  - [Rodando tests (payment-composer-api)](#rodando-tests-payment-composer-api)
 
 ### Características arquiteturais
 
 MoneyFlow foi desenhado como um sistema distribuído considerando as seguintes características arquiteturais:
 
 **Flexibilidade**
-Entendemos que as regras de negócio para o fluxo de pagamento mudam com frequência, por isso o sistema precisa ser flexível para se adaptar as mudanças.
+
+Entendemos que as regras de negócio para o fluxo de pagamento mudam com frequência, por isso MoneyFlow é flexível para se adaptar as mudanças.
 
 **Manutenibilidade**
-Mudanças não podem ser dolorosas de serem feitas, elas precisam ser ágeis e fáceis. O sistem foi desenhado para que de uma forma modular para que o acoplamento de código não torne a manutenção do sistema um pesadelo.
+
+Mudanças não podem ser dolorosas de serem feitas, elas precisam ser ágeis e fáceis. MoneyFlow foi desenhado de uma forma modular para que o acoplamento de código não torne a manutenção do sistema um pesadelo.
 
 **Escalabilidade**
-Escalabilidade operacional e sistêmica precisam andar lado a lado com a evolução do sistema. Atender o progresso de novas funcionalidades e suportar o crescimento da equipe são questões importantes para o projeto.
+
+Escalabilidade operacional e sistêmica precisam andar lado a lado com a evolução do projeto. Atender o progresso de novas funcionalidades e suportar o crescimento da equipe são quesitos levantados pelo design do sistema aplicando modularidade em conjunto com sistema distribuído.
 
 ### Arquitetura
 
@@ -79,13 +83,13 @@ C4Context
 
 O design do projeto é baseado na idealização de um framework de pagamento. A ideia central do framework é propopr uma interface comum para um fluxo arbritário de pagamento, onde o negócio pode compor as regras de acordo com a necessidade do cliente.
 
-O framework propoe alguns atores como coadjuvenvantes para o funcionamento do fluxo de pagamento. São eles:
+O framework propõe alguns atores como coadjuvenvantes para o funcionamento do fluxo de pagamento.
 
 **Compositor de regras**
 
-Responsável por compor as regras de negócio para o fluxo de pagamento do cliente. O compositor é uma interface web que permite a visualização e edição das regras de negócio. A interface é composta por um canvas onde o usuário pode arrastar e soltar os componentes de regras de negócio para compor o fluxo de pagamento. O compositor é responsável por persistir as regras de negócio no banco de dados.
+Responsável por compor as regras de negócio para o fluxo de pagamento do cliente. O compositor é uma interface web que permite a visualização e edição das regras de negócio por meio de um canvas onde o usuário pode arrastar e soltar os componentes de regras de negócio para compor o fluxo de pagamento.
 
-A interface deve seguir um modelo de componentes no estilo fluxograma, onde cada componente representa uma regra de negócio, cada componente pode ser conectado a outros componentes para compor o fluxo de pagamento definindo as interações entre os componentes.
+A interface segue um modelo de componentes baseado em fluxograma, onde cada componente representa um nó na regra de negócio, cada componente pode ser conectado a outros componentes para compor o fluxo de pagamento definindo as interações entre os componentes.
 
 Exemplo:
 
@@ -116,7 +120,7 @@ C4Component
 
 **Roteador**
 
-Dado uma entrada de pagamento e composição do cliente para o pagamento do contexto recebido o roteador é responsável por encaminhar o evento de pagamento para o fluxo de pagamento adicionando o contexto do cliente e a regra de negócio para o pagamento em especifico.
+O roteador é responsável por encaminhar o evento de pagamento para o fluxo de pagamento do cliente, contextualizando o evento de pagamento com a regra de negócio.
 
 ```mermaid
 C4Component
@@ -234,4 +238,10 @@ $ docker compose run --rm payment-composer-api alembic upgrade head
 
 ```shell
 $ docker compose run --rm payment-composer-api alembic revision --autogenerate
+```
+
+### Rodando tests (payment-composer-api)
+
+```shell
+$ docker compose run --rm payment-composer-api pytest -s -vv
 ```

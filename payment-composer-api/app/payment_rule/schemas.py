@@ -1,3 +1,6 @@
+from datetime import datetime
+from uuid import UUID
+
 from pydantic import BaseModel, Field
 
 from .enums import ConditionOperator, NodeState, NodeType
@@ -29,7 +32,11 @@ class Task(Node):
     parameters: dict = None
 
 
-class PaymentRule(BaseModel):
+class PaymentRuleSchema(BaseModel):
+    id: UUID
+    created_at: datetime
+    updated_at: datetime
+    company_id: str
     rules: list[Condition | Task]
 
 

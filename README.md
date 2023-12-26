@@ -2,7 +2,7 @@
 
 [![pre-commit](https://github.com/morais90/moneyflow/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/morais90/moneyflow/actions/workflows/pre-commit.yml) [![Tests](https://github.com/morais90/moneyflow/actions/workflows/tests.yml/badge.svg)](https://github.com/morais90/moneyflow/actions/workflows/tests.yml)
 
-MoneyFlow é um framework de fluxo de pagamentos que permite vocês compor as regras de negócio para qualquer cenário de pagamento!
+MoneyFlow é um framework de fluxo de pagamentos que permite compor as regras de negócio para qualquer cenário de pagamento!
 
 ![Banner](assets/moneyflow.png)
 
@@ -26,7 +26,7 @@ MoneyFlow foi desenhado como um sistema distribuído considerando as seguintes c
 
 **Flexibilidade**
 
-Entendemos que as regras de negócio para o fluxo de pagamento mudam com frequência, por isso MoneyFlow é flexível para se adaptar as mudanças.
+Entendemos que as regras de negócio para o fluxo de pagamento mudam com frequência, por isso, MoneyFlow é flexível para se adaptar às mudanças.
 
 **Manutenibilidade**
 
@@ -34,7 +34,7 @@ Mudanças não podem ser dolorosas de serem feitas, elas precisam ser ágeis e f
 
 **Escalabilidade**
 
-Escalabilidade operacional e sistêmica precisam andar lado a lado com a evolução do projeto. Atender o progresso de novas funcionalidades e suportar o crescimento da equipe são quesitos levantados pelo design do sistema aplicando modularidade em conjunto com sistema distribuído.
+Escalabilidade operacional e sistêmica precisam andar lado a lado com a evolução do projeto. Atender o progresso de novas funcionalidades e suportar o crescimento da equipe são quesitos levantados pelo design do sistema, aplicando modularidade em conjunto com sistema distribuído.
 
 ### Arquitetura
 
@@ -88,15 +88,15 @@ C4Context
 
 ### Design
 
-O design do projeto é baseado na idealização de um framework de pagamento. A ideia central do framework é propopr uma interface comum para um fluxo arbritário de pagamento, onde o negócio pode compor as regras de acordo com a necessidade do cliente.
+O design do projeto é baseado na idealização de um framework de pagamento. A ideia central do framework é propor uma interface comum para um fluxo arbritário de pagamento, onde o negócio pode compor as regras de acordo com a necessidade do cliente.
 
-O framework propõe alguns atores como coadjuvenvantes para o funcionamento do fluxo de pagamento.
+O framework propõe alguns atores como coadjuvantes para o funcionamento do fluxo de pagamento.
 
 **Compositor de regras**
 
-Responsável por compor as regras de negócio para o fluxo de pagamento do cliente. O compositor é uma interface web que permite a visualização e edição das regras de negócio por meio de um canvas onde o usuário pode arrastar e soltar os componentes de regras de negócio para compor o fluxo de pagamento.
+Responsável por compor as regras de negócio para o fluxo de pagamento do cliente, o compositor é uma interface web que permite a visualização e edição das regras de negócio por meio de um canvas onde o usuário pode arrastar e soltar os componentes de regras de negócio para compor o fluxo de pagamento.
 
-A interface segue um modelo de componentes baseado em fluxograma, onde cada componente representa um nó na regra de negócio, cada componente pode ser conectado a outros componentes para compor o fluxo de pagamento definindo as interações entre os componentes.
+A interface segue um modelo de componentização baseado em fluxograma, onde cada componente representa um nó na regra de negócio cada um pondendo ser conectado a a outro para compor o fluxo de pagamento definindo as interações.
 
 Exemplo:
 
@@ -146,10 +146,10 @@ C4Component
 
 **Orquestrador**
 
-O orquestrador é a camada responsável por garantir a correta composição da regra de negócio do cliente. Conectando os fluxos e fazendo o acompanhando da execução. Pense no orquestrador como um maestro de uma orquestra, onde cada fluxo é um instrumento e o maestro é responsável por garantir que cada instrumento seja tocado na ordem correta e no momento certo.
+O orquestrador é a camada responsável por garantir a correta composição da regra de negócio do cliente, conectando os fluxos e fazendo o acompanhando da execução. Pense no orquestrador como um maestro de uma orquestra, onde cada fluxo é um instrumento e o maestro é responsável por garantir que cada instrumento seja tocado na ordem correta e no momento certo.
 
 - O orquestrador deve ser capaz de executar os fluxos de pagamento em paralelo.
-- O orquestrador deve ser capaz de executar e lidar com falhas de execuçãos nos fluxos.
+- O orquestrador deve ser capaz de executar e lidar com falhas de execução nos fluxos.
 - O orquestrador deve ser capaz de entender as dependências entre os componentes dos fluxos e garantir a execução na ordem correta.
 - O orquestrador deve ser capaz de monitorar e notificar o estado de execução dos fluxos.
 
@@ -168,12 +168,12 @@ C4Component
 
 **Fluxos**
 
-Os fluxos são a parte operacional do framework onde os componentes são executados. Cada fluxo é responsável por garantir a correta execução dos componentes que compoem a regra de negócio do cliente. Tomando conta da ordem de execução, dependências, falhas e comunicação entre os componentes.
+Os fluxos são a parte operacional do framework onde os componentes são executados. Cada fluxo é responsável por garantir a correta execução dos componentes que compõem a regra de negócio do cliente, tomando conta da ordem de execução, dependências, falhas e comunicação entre os componentes.
 
 - Os fluxos devem ser capazes de executar os componentes em sequência.
 - Os fluxos devem ser capazes de executar e lidar com falhas de execução dos componentes.
-- Os fluxos devem ser idempotentes, se executados multiplas vezes devem produzir o mesmo resultado.
-- Os fluxos devem ser resilientes a falhas, se um componente falhar o fluxo deve ser capaz de se recuperar e continuar a execução dadas as diretrizes de falha para o componente.
+- Os fluxos devem ser idempotentes, se executados múltiplas vezes devem produzir o mesmo resultado.
+- Os fluxos devem ser resilientes a falhas. Se um componente falhar, o fluxo deve ser capaz de se recuperar e continuar a execução dadas as diretrizes de falha para o componente.
 - Os componentes dos fluxos deve seguir uma mesma interface de execução, onde cada componente deve receber uma entrada e produzir uma saída.
 
 ```mermaid
@@ -210,9 +210,9 @@ C4Component
 $ docker compose up
 ```
 
-Após iniciar os serviços você terá disponível os seguintes serviços:
+Após iniciar os serviços, você terá disponível os seguintes acessos:
 
-| Serviço              | Accesso                                             |
+| Serviço              | Acesso                                              |
 | -------------------- | --------------------------------------------------- |
 | Postgres             | localhost:5432                                      |
 | RabbitMQ             | localhost:5672, http://localhost:15672 (Management) |
@@ -227,13 +227,13 @@ Após iniciar os serviços você terá disponível os seguintes serviços:
 $ docker compose stop
 ```
 
-Para parar os serviços e remover os volumes é necessário executar o seguinte comando:
+Para parar os serviços e remover os volumes, é necessário executar o seguinte comando:
 
 ```shell
 $ docker compose down -v
 ```
 
-:warning: **Atenção**: Este comando irá remover todos os volumes dos serviços, incluindo o banco de dados e o RabbitMQ. Tenha certeza que você deseja remover os volumes antes de executar este comando.
+:warning: **Atenção**: este comando irá remover todos os volumes dos serviços, incluindo o banco de dados e o RabbitMQ. Tenha certeza que você deseja remover os volumes antes de executar este comando.
 
 ### Rodando migrations iniciais (payment-composer-api)
 

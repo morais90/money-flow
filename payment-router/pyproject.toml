@@ -8,7 +8,7 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.11"
 uvicorn = "^0.24.0.post1"
-fastapi = "^0.105.0"
+fastapi = "^0.109.0"
 pika = "^1.3.2"
 pydantic-settings = "^2.1.0"
 
